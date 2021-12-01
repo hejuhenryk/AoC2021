@@ -1,32 +1,26 @@
-"use strict";
+import { appendResault, transformInputToArrayOfNumbers } from "./utils.js";
+const day1part1 = (input) => input.reduce((acc, curr, indx, arr) => {
+    if (indx > 0) {
+        return curr > arr[indx - 1] ? ++acc : acc;
+    }
+    else
+        return 0;
+}, 0);
+const day1part2 = (input) => input.reduce((acc, curr, indx, arr) => {
+    if (indx > 2) {
+        return arr[indx] + arr[indx - 1] + arr[indx - 2] > arr[indx - 1] + +arr[indx - 2] + arr[indx - 3] ? ++acc : acc;
+    }
+    else
+        return 0;
+}, 0);
 fetch("../dist/inputs/input1.txt")
     .then((res) => res.text())
-    .then((res) => console.log(sumThreeTo2020(res.split("\n").map((n) => +n))));
-const sumTwoTo2020 = (data) => {
-    let startIndx = 0;
-    let endIndx = data.length - 1;
-    const getSum = () => data[startIndx] + data[endIndx];
-    data.sort((a, b) => a - b);
-    while (getSum() !== 2020 && startIndx < endIndx) {
-        if (getSum() < 2020)
-            startIndx++;
-        else if (getSum() > 2020)
-            endIndx--;
-    }
-    return getSum() === 2020 ? data[startIndx] * data[endIndx] : undefined;
-};
-const sumThreeTo2020 = (data) => {
-    let resaut = undefined;
-    data = data.sort((a, b) => a - b);
-    console.log(data);
-    const restDict = {};
-    data.forEach((x) => {
-        data.forEach((y) => (restDict[x + y] = x * y));
-    });
-    data.forEach((x) => {
-        if (restDict[2020 - x])
-            resaut = x * restDict[2020 - x];
-    });
-    return resaut;
-};
+    .then((res) => transformInputToArrayOfNumbers(res))
+    .then((res) => {
+    appendResault(day1part1(res), 1, 1);
+    return res;
+})
+    .then((res) => {
+    appendResault(day1part2(res), 1, 2);
+});
 //# sourceMappingURL=day1.js.map
